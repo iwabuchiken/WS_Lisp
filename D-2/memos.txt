@@ -1,0 +1,48 @@
+a
+pushd C:\WORKS\WS\WS_Lisp\D-2
+clisp
+
+(trace factorial)
+(factorial 4)
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+(load "func_1.lisp")
+(addition 3)
+ 
+(isor 3 5)
+(bet 4 3 5)
+(echo "abc")
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+(binomial 4 2)
+(binomial 3 4)
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+(list_binomial 4 2)
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+(recursive-list-length '(20 15 01 09 07 53 43))
+(recursive-list-length 4)
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+(call_echo echo "yes")
+(call_echo "yes")
+
+(funcall echo "yes")
+
+(call_echo (function echo) "yes")
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+(call_binomial 4 2)
+
+------------------------------
+#2
+
+(member 'a' (b a c d))
+(member (a c) (b a c d))
+
+#3 lambda	REF http://www.cs.sfu.ca/CourseCentral/310/pwfong/Lisp/2/source2.lisp
+lambda (X) (not (member X L2))) L1)	;=> n/w
+
+#4	//REF http://n-a-n-o.com/lisp/cmucl-tutorials/LISP-tutorial-21.html
+(lambda (x) (+ x 3) 6)		;=> #<FUNCTION :LAMBDA (X) (+ X 3)>
+((lambda (x) (+ x 3)) 10)	;=> 13
