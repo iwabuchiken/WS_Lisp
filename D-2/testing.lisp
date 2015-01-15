@@ -22,3 +22,14 @@
   "Negate the value of X."  ; This is a documentation string.
   (- X))   
 
+(defun factorial (N)
+  "Compute the factorial of N."
+  (if (= N 1)
+      1
+    (* N (factorial (- N 1)))))
+
+(defun fibonacci (N)
+  "Compute the N'th Fibonacci number."
+  (if (or (zerop N) (= N 1))
+      1
+    (+ (fibonacci (- N 1)) (fibonacci (- N 2)))))
