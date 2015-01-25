@@ -1,0 +1,129 @@
+;; Dribble of #<IO TERMINAL-STREAM> started on 2015-01-25 12:28:47.
+#<OUTPUT BUFFERED FILE-STREAM CHARACTER #P"D-2\\output_2.txt">
+Break 2 [7]> (recursive-list-length '(2 3 4 5))
+1. Trace: (RECURSIVE-LIST-LENGTH '(2 3 4 5))
+2. Trace: (RECURSIVE-LIST-LENGTH '(3 4 5))
+3. Trace: (RECURSIVE-LIST-LENGTH '(4 5))
+4. Trace: (RECURSIVE-LIST-LENGTH '(5))
+5. Trace: (RECURSIVE-LIST-LENGTH 'NIL)
+5. Trace: RECURSIVE-LIST-LENGTH ==> 0
+4. Trace: RECURSIVE-LIST-LENGTH ==> 1
+3. Trace: RECURSIVE-LIST-LENGTH ==> 2
+2. Trace: RECURSIVE-LIST-LENGTH ==> 3
+1. Trace: RECURSIVE-LIST-LENGTH ==> 4
+4
+Break 2 [7]> '(is it going well?)
+(IS IT GOING WELL?)
+Break 2 [7]> (nth 0 '(a b c d))
+A
+Break 2 [7]> (nth 3 '(a b c d))
+D
+Break 2 [7]> (load "D-2/func_1.lisp")
+;; Loading file D-2\func_1.lisp ...
+WARNING: DEFUN/DEFMACRO: redefining RECURSIVE-LIST-LENGTH; it was traced!
+;; Loaded file D-2\func_1.lisp
+T
+Break 2 [7]> (list-nth 2 '(a b c d))
+C
+Break 2 [7]> (trace list-nth)
+;; Tracing function LIST-NTH.
+(LIST-NTH)
+Break 2 [7]> (trace list-nth)
+;; Tracing function LIST-NTH.
+(LIST-NTH)
+Break 2 [7]> (list-nth 2 '(a b c d))
+1. Trace: (LIST-NTH '2 '(A B C D))
+2. Trace: (LIST-NTH '1 '(B C D))
+3. Trace: (LIST-NTH '0 '(C D))
+3. Trace: LIST-NTH ==> C
+2. Trace: LIST-NTH ==> C
+1. Trace: LIST-NTH ==> C
+C
+Break 2 [7]> (trace last)
+
+** - Continuable Error
+TRACE(LAST): #<PACKAGE COMMON-LISP> is locked
+If you continue (by typing 'continue'): Ignore the lock and proceed
+The following restarts are also available:
+ABORT          :R1      Abort debug loop
+ABORT          :R2      Abort debug loop
+ABORT          :R3      Abort main loop
+Break 3 [8]> continue
+WARNING: TRACE: redefining function LAST in top-level, was defined in C
+;; Tracing function LAST.
+(LAST)
+Break 2 [7]> exit
+
+*** - SYSTEM::READ-EVAL-PRINT: variable EXIT has no value
+The following restarts are available:
+USE-VALUE      :R1      Input a value to be used instead of EXIT.
+STORE-VALUE    :R2      Input a new value for EXIT.
+ABORT          :R3      Abort debug loop
+ABORT          :R4      Abort debug loop
+ABORT          :R5      Abort main loop
+Break 3 [9]> (trace last)
+;; Tracing function LAST.
+(LAST)
+Break 3 [9]> (last '(x y z alpha))
+1. Trace: (LAST '(X Y Z ALPHA))
+1. Trace: LAST ==> (ALPHA)
+(ALPHA)
+Break 3 [9]> (load "D-2/func_1.lisp")
+;; Loading file D-2\func_1.lisp ...
+WARNING: DEFUN/DEFMACRO: redefining LIST-NTH; it was traced!
+;; Loaded file D-2\func_1.lisp
+T
+Break 3 [9]> (trace list-nth-2)
+;; Tracing function LIST-NTH-2.
+(LIST-NTH-2)
+Break 3 [9]> (list-nth-2 2 '(Notice that we have a standard))
+1. Trace: (LIST-NTH-2 '2 '(NOTICE THAT WE HAVE A STANDARD))
+1. Trace: LIST-NTH-2 ==> WE
+WE
+Break 3 [9]> (member 'b '(perhaps today is a good day to die))
+NIL
+Break 3 [9]> (member 'a '(perhaps today is a good day to die))
+(A GOOD DAY TO DIE)
+Break 3 [9]> (member 'above '(The correctness of the above implementation is easy to justify))
+(ABOVE IMPLEMENTATION IS EASY TO JUSTIFY)
+Break 3 [9]> (load "D-2/func_1.lisp")
+;; Loading file D-2\func_1.lisp ...
+WARNING: DEFUN/DEFMACRO: redefining LIST-NTH-2; it was traced!
+;; Loaded file D-2\func_1.lisp
+T
+Break 3 [9]> (trace list-member)
+;; Tracing function LIST-MEMBER.
+(LIST-MEMBER)
+Break 3 [9]> (list-member 'test '(In fact, the semantics of this test determines what we mean))
+
+*** - READ: comma is illegal outside of backquote
+The following restarts are available:
+ABORT          :R1      Abort debug loop
+ABORT          :R2      Abort debug loop
+ABORT          :R3      Abort debug loop
+ABORT          :R4      Abort main loop
+Break 4 [10]> (list-member 'test '(In fact the semantics of this test determines what we mean))
+1. Trace: 
+(LIST-MEMBER 'TEST
+ '(IN FACT THE SEMANTICS OF THIS TEST DETERMINES WHAT WE MEAN))
+2. Trace: (LIST-MEMBER 'TEST '(FACT THE SEMANTICS OF THIS TEST DETERMINES WHAT WE MEAN))
+3. Trace: (LIST-MEMBER 'TEST '(THE SEMANTICS OF THIS TEST DETERMINES WHAT WE MEAN))
+4. Trace: (LIST-MEMBER 'TEST '(SEMANTICS OF THIS TEST DETERMINES WHAT WE MEAN))
+5. Trace: (LIST-MEMBER 'TEST '(OF THIS TEST DETERMINES WHAT WE MEAN))
+6. Trace: (LIST-MEMBER 'TEST '(THIS TEST DETERMINES WHAT WE MEAN))
+7. Trace: (LIST-MEMBER 'TEST '(TEST DETERMINES WHAT WE MEAN))
+7. Trace: LIST-MEMBER ==> T
+6. Trace: LIST-MEMBER ==> T
+5. Trace: LIST-MEMBER ==> T
+4. Trace: LIST-MEMBER ==> T
+3. Trace: LIST-MEMBER ==> T
+2. Trace: LIST-MEMBER ==> T
+1. Trace: LIST-MEMBER ==> T
+T
+Break 4 [10]> (list-member-2 'test '(In fact the semantics of this test determines what we mean))
+T
+Break 4 [10]> (eq '(a b) '(a b))
+NIL
+Break 4 [10]> (equal '(a b) '(a b))
+T
+Break 4 [10]> 

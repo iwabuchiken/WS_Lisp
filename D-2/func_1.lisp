@@ -152,3 +152,29 @@
   "Compute the intersection of lists L1 and L2."
   (remove-if #'(lambda (X) (not (member X L2))) L1)
 )
+
+(defun list-nth (N L)
+  "Return the N'th member of a list L."
+  (if (null L)
+      nil
+    (if (zerop N) 
+	(first L)
+      (list-nth (1- N) (rest L)))))
+
+(defun list-nth-2 (n L)
+  "Return the n'th member of a list L."
+  (cond
+   ((null L)   nil)
+   ((zerop n)  (first L))
+   (t          (list-nth (1- n) (rest L)))))
+
+(defun list-member (E L)
+  "Test if E is a member of L."
+  (cond
+   ((null L)          nil)   
+   ((eq E (first L))  t)     
+   (t                 (list-member E (rest L))))) 
+
+(defun list-member-2 (E L)
+  t
+  )

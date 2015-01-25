@@ -3,6 +3,7 @@
 =========== Tut: 1 ===========
 (load "testing.lisp")
 (load "D-2/testing.lisp")
+(load "D-2/func_1.lisp")
 
 (compile-file "D-2/testing.lisp")
 (load "D-2/testing")
@@ -35,3 +36,46 @@
 
 (list-length (first '(3 4 5 3 4 6 7)))	//=> "A proper list must not end with 3"
 
+25/01/2015 12:16:06 --------------------------------
+(list-length '(2 3 5 7 11 13 17 19))
+
+(recursive-list-length '(2 3 4 5))
+
+(dribble "D-2/output_2.txt")
+
+(trace recursive-list-length)
+
+(dribble)	//=> stop dribbling: REF http://www.sci.csueastbay.edu/computerlab/SciLabBackup/docs/akclisp.html
+
+'(is it going well?)
+
+(nth 0 '(a b c d))
+
+(list-nth 2 '(a b c d))
+
+(trace list-nth)
+(list-nth 2 '(a b c d))
+
+(trace last)
+(last '(x y z alpha))
+
+(load "D-2/func_1.lisp")
+
+(trace list-nth-2)
+
+(list-nth-2 2 '(Notice that we have a standard))
+
+(member 'b '(perhaps today is a good day to die))
+(member 'a '(perhaps today is a good day to die))
+
+(member 'above '(The correctness of the above implementation is easy to justify))
+
+(load "D-2/func_1.lisp")
+
+(trace list-member)
+
+(list-member 'test '(In fact the semantics of this test determines what we mean))
+(list-member-2 'test '(In fact the semantics of this test determines what we mean))
+
+(eq '(a b) '(a b))
+(equal '(a b) '(a b))
