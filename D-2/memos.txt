@@ -46,3 +46,26 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
 #4	//REF http://n-a-n-o.com/lisp/cmucl-tutorials/LISP-tutorial-21.html
 (lambda (x) (+ x 3) 6)		;=> #<FUNCTION :LAMBDA (X) (+ X 3)>
 ((lambda (x) (+ x 3)) 10)	;=> 13
+
+--------------------------------------
+30/01/2015 09:43:26
+
+(load "D-2/func_1.lisp")
+(append '(a b c) '(c d e))
+(list-length (append '(a b c) '(c d e)))
+
+(trace list-append)
+(list-append '(a b c) '(c d e))
+
+(list-member 'above '(The correctness of the above implementation is easy to justify))
+#(t (list-member 'above '(The correctness of the above implementation is easy to justify)))
+
+(list-intersection '(a b c) '(d e b f))	#=> (B)
+(list-intersection '(a b c) '(d e b f c))	#=> (B C)
+(list-length (list-intersection '(a b c) '(d e b f)))	#=> 1
+(trace list-intersection)
+(list-intersection '(a b c) '(d e b f c))
+
+(trace list-intersection-2)
+(list-intersection-2 '(a b c) '(d e b f c))
+

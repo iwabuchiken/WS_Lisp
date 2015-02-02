@@ -178,3 +178,18 @@
 (defun list-member-2 (E L)
   t
   )
+
+(defun list-append (L1 L2)
+  "Append L1 by L2."
+  (if (null L1)
+      L2
+    (cons (first L1) (list-append (rest L1) L2))))
+
+(defun list-intersection-2 (L1 L2)
+  "Return a list containing elements belonging to both L1 and L2."
+  (cond
+   ((null L1) nil)
+   ((member (first L1) L2) 
+    (cons (first L1) (list-intersection (rest L1) L2)))
+   (t (list-intersection (rest L1) L2))))
+
