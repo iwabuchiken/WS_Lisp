@@ -69,3 +69,27 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
 (trace list-intersection-2)
 (list-intersection-2 '(a b c) '(d e b f c))
 
+
+--------------------------------------------
+02/02/2015 20:26:35
+
+(intersection '(a b c d) '(c d e f))
+(union '(a b c d) '(c d e f))
+(difference '(a b c d) '(c d e f))
+
+(list-length (intersection '(a b c d) '(c d e f)))
+
+(trace intersection)
+(trace union)
+
+(setq b '(1 2 2 ))
+
+(cons a b)
+(setq L1 (cons a b))
+
+(setq tmp (cons 'char nil))
+(setq tmp (cons 'char tmp))
+
+(setq L1 '(a b c d))
+(setq L2 '(c d e f))
+(list-diff L1 L2)

@@ -193,3 +193,79 @@
     (cons (first L1) (list-intersection (rest L1) L2)))
    (t (list-intersection (rest L1) L2))))
 
+(defun addup (char num)
+  
+  "Add char up for 'num' number of times"
+  
+  (setq count 0)
+  (setq tmp nil)
+  
+  (loop
+
+    (setq tmp (cons char tmp))
+    (setq count (+ count 1))
+    (when (> count (- num 1))
+;    (when (> count num)
+      (print tmp)
+      (return tmp)
+      );when
+  
+  );loop
+  
+);defun addup
+
+(defun list-diff (L1 L2)
+  
+  (setq Lu (union L1 L2))
+  (setq Li (intersection L1 L2))
+
+  ;Report
+  (print "L1 is")
+  (print L1)
+  (print "L2 is")
+  (print L2)
+  
+  (print "union is")
+  (print Lu)
+  
+  (print "intersec is")
+  (print Li)
+    
+  ;; get: length of the union
+  (print "len of union is")
+  (setq len_union (list-length Lu))
+  (print len_union)
+
+  ;-------------------------------
+  ;	validate: union
+  ;-------------------------------
+  (cond
+    ((> 1 len_union)
+      (print "len_union => < 1")
+      (return)
+      )
+    ((> len_union 1)  (print "len_union => > 1"))
+;    (t                 (list-member E (rest L)))
+    );cond
+        
+  ;-------------------------------
+  ;	validate: intersection
+  ;-------------------------------
+  (setq len_intersec (list-length Li))
+  
+  (cond
+    ((> 1 len_intersec)
+      (print "len_intersec => < 1")
+      (return)
+      )
+    ((> len_intersec 1)  (print "len_intersec => > 1"))
+;    (t                 (list-member E (rest L)))
+    );cond
+        
+  );;defun list-diff
+
+
+
+  ;-------------------------------
+  ;	
+  ;-------------------------------
