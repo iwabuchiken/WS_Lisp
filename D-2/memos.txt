@@ -93,3 +93,25 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
 (setq L1 '(a b c d))
 (setq L2 '(c d e f))
 (list-diff L1 L2)
+
+--------------------------------------------
+08/02/2015 20:55:37
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(reverse L1)
+
+(return_from 17)
+
+(trace return_from)
+
+(open "D-2/memos.txt")
+(setq f1 (open "D-2/memos.txt"))
+
+//REF http://www.gigamonkeys.com/book/files-and-file-io.html
+(let ((in (open "D-2/memos.txt")))
+  (format t "~a~%" (read-line in))
+  (close in))
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------

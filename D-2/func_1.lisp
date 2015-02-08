@@ -269,3 +269,9 @@
   ;-------------------------------
   ;	
   ;-------------------------------
+
+(defun return_from (x)
+  (return-from return_from x)
+;  (return-from return_from 3)
+  
+  )
