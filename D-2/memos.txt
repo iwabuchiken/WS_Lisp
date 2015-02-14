@@ -113,5 +113,30 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
   (format t "~a~%" (read-line in))
   (close in))
 --------------------------------------------
+14/02/2015 07:20:30
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(setq L1 '(a b c d))
+(reverse L1)
+(setq L2 (reverse L1))
+
+"abc \newline def"
+
+(subseq "Among other things" 2 9)
+
+(/ 3.0 7)
+
+(reverse "Guess what function is associated with each of these symbols")
+
+(sqrt -1.1)
+#C(1 1)
+(sqrt #C(1 1))
+(sqrt (sqrt #C(1 1)))
+
+(numberp 2)
+(numberp "design")
+
+
 --------------------------------------------
 --------------------------------------------

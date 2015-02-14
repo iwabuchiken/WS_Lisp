@@ -275,3 +275,53 @@
 ;  (return-from return_from 3)
   
   )
+
+(defun sqrt-complex (x)
+;(defun sqrt-complex (a b x)
+  
+  (setq counter 0)
+;  (setq c1 #C(a b))
+  (setq c1 #C(1 1))
+  
+  (loop
+    (setq counter (+ counter 1))
+ 
+    (print counter)
+    (print c1)
+       
+    (when (>= counter x)
+      (print "done")
+      (return c1)
+      ;(return counter)
+      );when
+  
+    (setq c1 (sqrt c1))
+    
+  )
+)
+
+(defun logs (x n)
+
+  (setq counter 0)
+;  (setq res (log x))
+  (print x)
+  
+  (loop
+    
+    (when (>= counter n)
+      (print "done")
+      (return)
+      ;(return counter)
+      );when
+  
+;    (setq res (log res))
+    (setq x (log x))
+    
+    (print counter)
+    (print x)
+
+    (setq counter (+ counter 1))
+    
+  )
+  
+)
