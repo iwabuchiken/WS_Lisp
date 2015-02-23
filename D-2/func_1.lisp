@@ -325,3 +325,24 @@
   )
   
 )
+
+(defun d_2_v_1_4 ()
+  
+  (if (string= "a" "a")
+
+		(progn
+			(print "yes")
+			(print "mostly")
+			(print "great")
+            9
+    
+		)
+		
+		(+ 4 2 3)))
+
+
+(defun d_2_v_1_4_let ()
+  
+  (let (a 3))
+  
+  )

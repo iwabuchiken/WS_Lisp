@@ -139,4 +139,47 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
 
 
 --------------------------------------------
+23/02/2015 10:25:01
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(defparameter *my-string* (string "Groucho Marx"))
+
+(subseq *my-string* 0 7)
+
+(setq s1 "abcdef")
+
+(subseq s1 0 5)
+
+(string-upcase "We'll discuss the format")
+
+(if (> 2 1) (print "YES") (print "No"))
+
+//(if (= "a" "a")
+//(if (eq "a" "a")
+(if (string= "a" "a")
+
+	(progn
+		(print "yes")
+		(print "mostly")
+		(print "great")
+	)
+	
+	(+ 4 2 3)
+)
+
+(setf x 3)	//=> works
+(setf x (* 2 5))	//=> 
+
+//(let ((a 3) (+ a 3)))	//=> n/w
+(let ((a 3)) (+ a 3))
+(let ((a 3)(b "abc")) (+ a 3)(b))	//=> undefined: B
+(let ((a 3)(b "abc")) (+ a 3)(print b))
+
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
+--------------------------------------------
 --------------------------------------------
