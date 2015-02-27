@@ -177,7 +177,25 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
 (let ((a 3)(b "abc")) (+ a 3)(print b))
 
 --------------------------------------------
+25/02/2015 08:17:02
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(reverse "just one expression")
+
+(first-n-chars "first-n-chars" 4 t)
+
 --------------------------------------------
+27/02/2015 20:52:15
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(print-string-stuff "the function returns")
+
+(factorial_2 20)
+
+(my-equation 4)
+
 --------------------------------------------
 --------------------------------------------
 --------------------------------------------

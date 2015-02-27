@@ -346,3 +346,61 @@
   (let (a 3))
   
   )
+
+(defun d_2_v_1_5_dotimes ()
+  
+  ;; init vars
+  (setf bag 2)
+  (print "bag=")(print bag)
+  
+  (setf x 9)
+  (print "x=")(print x)
+  
+  ;; dotimes
+  (print "dotimes => 6")
+;  (dotimes (x 4 "yo") (print "Hi")
+;  (dotimes (x 4) (print "Hi")(print x)
+  (dotimes 
+;    (x 4)
+    (x 6)
+	    (print "Hi")(print x)
+        (setf bag (* bag bag))
+        (print "bag=")(print bag)
+    
+  )
+
+  (print "dotmies => done")
+  
+  ;; report
+  (print "x=")(print x)
+  (print "bag=")(print bag)
+  
+  bag
+)
+
+(defun first-n-chars (string n reverse-first)
+          (if reverse-first
+            (subseq (reverse string) 0 n)
+            (subseq string 0 n))
+)
+
+(defun print-string-stuff (string-1)
+;  (print-string-stuff "abc")
+          (print string-1)
+          (print (reverse string-1))
+          (print (length string-1))
+          string-1)
+
+(defun factorial_2 (n)
+          (let ((sum 1))
+            (dotimes (x n)
+              (setf sum (* sum (1+ x))))
+            sum)
+  ;(print sum)
+  sum
+  
+  )
+
+(defun my-equation (n)
+          (+ n (* (sin n) (cos n))))
+
