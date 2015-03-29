@@ -404,7 +404,6 @@
 (defun my-equation (n)
           (+ n (* (sin n) (cos n))))
 
-
 (defun time_process (n)
   
   (dotimes (x n)		;;=> 
