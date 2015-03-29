@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+  <link rel="stylesheet" type="text/css" href="style.css" title="Our Stylesheet"/>
+
+  <title>cells-gtk Home Page</title>
+
+</head>
+
+<body>
+ <div id="top"></div>
+ <!-- ###### Header ###### -->
+
+  <div id="header">
+      <span class="headerTitle"><strong>cells-<span style="color: rgb(51, 51, 255);"><span style="color: rgb(255, 0, 0);">g</span><span style="color: rgb(51, 204, 0);">t</span>k</span></strong></span>
+      <div class="headerLinks">
+        <a href="http://www.common-lisp.net/">common-lisp.net home</a>
+      </div>
+  </div>
+
+  <!-- ###### Side Boxes ###### -->
+
+    <div class="sideBox LHS">
+      <div>Contents</div>
+      <a href="#introduction">Introduction</a>
+      <a href="#news">News</a>
+      <a href="screenshots.html">Screenshots</a>
+      <a href="#download">Download / CVS</a>
+      <a href="faq.html">FAQ</a>
+      <a href="cgtk-primer.html">cells-gtk Primer</a>
+      <a href="#mailinglist">Mailing List</a>
+    </div>
+
+<div id="bodyTextWide">
+
+
+ <!-- ###### Introduction ###### -->
+<h1 id='introduction'>Introduction</h1>
+<span style="font-weight: bold;">cells-gtk</span> is a complete, portable framework for 
+<a href="http://www.alu.org/alu/home">Common Lisp</a> GUI development via
+<a href="http://www.gtk.org/">GTK+2</a> with&nbsp; 
+<a href="http://common-lisp.net/project/cells/">Cells</a>
+<a href="http://common-lisp.net/project/cells/"> Inside<sup><sub>TM</sub></sup></a>,
+licensed under the <a href="http://opensource.franz.com/preamble.html">Lisp
+LGPL</a>
+<ul>
+  <li>GTK+ is the premier cross-platform GUI development environment,
+      so popular that, well, see also&nbsp; 
+      <a href="http://common-lisp.net/project/lambda-gtk/">lambda-gtk</a> and 
+      <a  href="http://common-lisp.net/project/lgtk/">lgtk</a> for a other
+      projects making GTK+ available to Lispniks.</li>
+  <li>Cells transparently link GUI elements with each other and the
+      application model to greatly simplify development of rich interfaces.
+      Cells also automate how Lisp GUI instances drive their GTK+
+      counterparts.</li>
+  <li>Common Lisp is coming on as the language of choice for any
+      self-respecting geek. CL is mature, compiled, object-oriented,
+      reflective, multi-paradigm, dynamic, and who do you think invented
+     garbage collection?</li>
+</ul>
+
+<span style="font-weight: bold;">cells-gtk</span> was originally developed
+by Vasilis Margioulas for <a href="http://clisp.sourceforge.net/">CLisp</a>, 
+and is now available with <a href="http://common-lisp.net/project/cffi/">CFFI</a> bindings 
+for greater portability. Vasilis included an astonishing array of examples in his
+initial release, just some of which can be seen in the 
+<a href='screenshots.html'>screenshots</a> graciously provide by Klaus Wiedner.
+<p/>
+<strong>cell-gtk</strong> has been tested under Allegro(Windows), Lispworks(Linux, PC), 
+CLISP(Linux, PC), SBCL(Linux), and CMUCL(Linux). 
+<p/>
+  <!-- ###### News ###### -->
+<h1 id='news'>News</h1>
+
+<ul>
+  <li> <strong>2006-06-07</strong> 
+          <ul>
+           <li>Patches from Andras Simon allow Cells-GTK to load without complaints under
+              SBCL. (Tested under SBCL 0.9.12).</li>
+          <li>The patch also allows libcellsgtk.so to be located wherever it
+              was built, rather than having to copy it to /usr/lib, etc.</li>
+          <li>A version of Cells (What was called "Cells 2" at some point) was added to CVS. 
+              Having our own copy should help keep things stable as Cells evolves.</li>
+         </ul>
+  <li> <strong>2006-06-01</strong> Patches from Marco Gidde make Cells-GTK work better under SBCL. 
+        These patches were applied to the CVS repository, but are not in any snapshot yet. See the repository 
+        versions of gtk-ffi/gtk-utilities.lisp pod-utils/utils.lisp and gtk-ffi/gtk-ffi.lisp for
+        the fixes, or read the <a href='http://common-lisp.net/pipermail/cells-gtk-devel/2006-May/000171.html'>
+        mail</a> from Marco. It includes the patches.</li>
+  <li> <strong>2006-02-16</strong> Native CFFI now used in most of the code. There is a 
+       <a href="ftp://common-lisp.net/pub/project/cells-gtk/cells-gtk-2006-02-16.tgz">snapshot release</a>.</li>
+  <li> <strong>2006-01-03</strong> BIG NEWS! cells-gtk now runs under <a href="http://clisp.cons.org">CLISP</a>
+   and uses <a href="http://common-lisp.net/project/cffi/">CFFI</a>, not Hello-c for its foreign function interface. 
+   The 2006-01-03 tarball reflects these changes. Especial thanks to Novikov Leonid, who did the CLISP port
+   to get things started. The new code has been lightly tested with:
+    <ul>
+     <li>Lispworks 4.5 Pro/Linux </li>
+     <li>CLISP/Linux</li>
+     <li>CMUCL/Linux</li>
+     <li>ACL 8.0 Beta/Linux (without libcellsgtk)</li>
+     <li>SBCL 0.9.7.5/Linux/x86, but see the
+      <a href="http://common-lisp.net/pipermail/cells-gtk-devel/2006-January.txt">note</a> in
+      the cells-gtk-devel archive for January 2006.
+   </ul>    
+   If I didn't break anything, it also works with CLISP/Win32 and Lispworks/Win32.</li>
+  <li> <strong>2005-11-15</strong> We now provide the win32 .dll
+   and linux .so for libcellsgtk. They are:
+   <a href="ftp://common-lisp.net/pub/project/cells-gtk/libcellsgtk.so">this for linux</a> and 
+   <a href="ftp://common-lisp.net/pub/project/cells-gtk/libcellsgtk.dll">this for win32</a>. 
+   This is sort of experimental. If you have problems (e.g. with version mismatch) drop the
+   mailing list a note.</li>
+ 
+  <li> <strong>2005-10-08</strong> Some additional discussion in the FAQ. Some
+    work to implement DrawingArea is underway in CVS HEAD.
+    HEAD *should* be OK. New tarballs will be created when it is complete. </li>
+
+  <li> <strong>2005-05-29</strong> Allows hierarchical arrangement of items in ComboBox. 
+       (requires libcellsgtk)</li>
+
+  <li> <strong>2005-03-03</strong> textview now has capabilities for programmatic 
+       manipulation and markup of the text.</li>
+
+  <li> <strong>2005-02-28</strong> libcellsgtk introduced to enable some 
+       capabilities otherwise not available through the FFI.</li>
+</ul>
+
+  <!-- ###### Download ###### -->
+<h1 id='download'>Download</h1>
+
+<ul> 
+
+  <li><strong>Tarballs:</strong> We intend to provide self-contained tarballs that are 
+      snapshots of the CVS repository, and contain all the ancillary modules (cells, cffi, etc). 
+      Here are a few:
+       <ul>
+         <li><a href="ftp://common-lisp.net/pub/project/cells-gtk/cells-gtk-2006-02-16.tgz">cells-gtk-2006-02-16.tgz</a>
+	   <ul>
+             <li>Native CFFI. That is, not Hello-C to UFFI, to CFFI-UFFI-COMPAT (yuk!).</li>
+	     <li>More testing, testing of CLISP/Windows 2000</li>
+           </ul>
+         <li><a href="ftp://common-lisp.net/pub/project/cells-gtk/cells-gtk-2006-01-03.tgz">cells-gtk-2006-01-03.tgz</a>
+	   <ul>
+             <li>Uses CFFI, not Hello-C (See "News" above).</li>
+             <li>Runs under CLISP, Lispworks, CMUCL, SBCL, ACL and maybe others.</li>
+             <li>Checks whether pages of a Notebook are already displayed.</li>
+             <li>Provides a Makefile for libcellsgtk for Windows.</li>
+             <li>Provides more control over divider position in Pane widget.</li>
+             <li>Drawing widget implementation started.</li>
+             <li>Lots of minor stuff.</li>
+             <li><strong>NOTE:</strong> This has only been tested with the lisps listed in the "News" above.
+                 If it works elsewhere drop the mailing list a note.
+           </ul>
+         <li><a href="ftp://common-lisp.net/pub/project/cells-gtk/cells-gtk-2005-05-29.tgz">cells-gtk-2005-05-29.tgz</a>
+	   <ul>
+             <li>ComboBoxes may now use a TreeModel; allows hierarchical arrangement of items. (requires libcellsgtk)</li>
+             <li>Uses Cells 2</li>
+             <li>:expand-all on TreeView allows Tree to initially display completely expanded.</li>
+             <li>New procedure to locate dynamic libraries. (Works 'out of the box' 50% of the time versus 10% before ???)
+             <li>Has <em>not</em> been tested on Windows. Drop the group a note if you try it.</li>
+           </ul>
+         <li><a href="ftp://common-lisp.net/pub/project/cells-gtk/cells-gtk-2005-02-26.tgz">cells-gtk-2005-02-26.tgz</a>
+             </li>
+       </ul>
+     </li>
+
+  <li><strong>CVS:</strong> Of course, you can get the freshest code from 
+      <a href="http://common-lisp.net/cgi-bin/viewcvs.cgi/root/?cvsroot=cells-gtk">CVS</a> 
+      but it might be a little less stable. 
+      Information on checking out code from the common-lisp.net repository can be found
+      at <a href="http://common-lisp.net/faq.shtml">http://common-lisp.net/faq.shtml</a></li>
+
+  <li><strong>Original CLISP Code:</strong> Now that CLISP is back in
+      the main tree, this isn't the place to start but just in case we screwed something up
+      and you want to have a look, it's
+      <a href="http://common-lisp.net/cgi-bin/viewcvs.cgi/root/?cvsroot=cells-gtk">here</a>
+      via CVS or the "Download tarball" link at the bottom of that page.
+       Follow instructions in the include INSTALL.TXT.</li>
+</ul>
+
+  <!-- ###### Mailing List ###### -->
+<h1 id='mailinglist'>Mailing List</h1>
+
+We have a <a href="http://common-lisp.net/mailman/listinfo/cells-gtk-devel">project
+mailing list</a> where questions are always welcome.
+
+<hr/>
+<address><a href="mailto:peter.denno@nist.gov">Peter Denno</a></address>
+Last modified: 2006-06-01
+<!-- hhmts end -->
+   <a href="http://validator.w3.org/check?uri=referer"><img
+    src="http://www.w3.org/Icons/valid-xhtml10"
+    alt="Valid XHTML 1.0!" height="31" width="88" /></a>
+</div>
+</body>
+</html>

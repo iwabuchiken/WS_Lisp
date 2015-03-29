@@ -1,0 +1,272 @@
+/* Style code taken from oswd.net, this design originally by haran.
+/* original header:
+/* TITLE: Stylesheet for Purple Haze
+/* URI  : /purplehaze/purplehaze.css
+/* MODIF: 2002-12-15 17:34 +0800
+
+
+/* ###### Color Scheme ###### */
+
+/*
+ * CHANGING THE COLOR SCHEME
+ * -------------------------
+ * 
+ * Four basic colors were used in the design. To change the
+ * color scheme, just edit these four values below.
+ *
+ */
+
+.topOfPage, q, h1, h2, h3, .headerTitle, .siteMap, .siteMap *, .headerLinks, .headerLinks *, .sideBox div, #footer *
+{ /* Text Color: */  color: /* #a0a0ff; */ #1111ff; }
+
+q, h2,  #header, .sideBox, .sideBox div, #footer
+{ /* Border Color: */  border-color: #c0c0ff; }
+
+#header, .sideBox div, .sideBox a:hover
+{ /* Background Color (darker): */  background-color: #f0f0ff; }
+
+
+q, .sideBox a, .sideBox span, #footer
+ /* Background Color (lighter): */ 
+ { background-color: #fcfcff; } 
+
+
+
+/* ###### Browser-specific Styles ###### */
+
+/* For IE & Mozilla-based browsers: */
+
+.LHS {
+  margin-left: 2.5mm;
+  float: left;
+  clear: left;
+  width: 10em;
+}
+
+.RHS {
+  margin-right: 2.5mm; 
+  float: right;
+  clear: right;
+  width: 14em;
+  font-size: small;
+}
+
+/* For Mozilla-based (CSS2-fully complaint) browsers only: */
+
+[class~="LHS"] {
+  margin-left: 5mm;
+}
+
+[class~="RHS"] {
+  margin-right: 5mm;
+}
+
+
+/* ###### Body Text ###### */
+
+#bodyText {
+  line-height: 1.5em;
+  margin: 10mm 14em 0 12em;
+  padding: 0 1em 1ex 1em;
+}
+
+#bodyTextWide {
+  line-height: 1.5em;
+  margin: 10mm 2em 0 12em;
+  padding: 0 1em 1ex 1em;
+}
+
+#bodyTextWideNoSideBox {
+  line-height: 1.5em;
+  margin: 10mm 2em 0 2em;
+  padding: 0 1em 1ex 1em;
+}
+
+#bodyText p {
+  padding-bottom: 1ex;
+}
+
+#bodyText ul {
+  padding-bottom: 1ex;
+}
+
+.topOfPage {
+  font-size: 90%;
+  font-weight: bold;
+  font-variant: small-caps;
+  text-decoration: none;
+  padding-left: 1ex;
+  padding-right: 1ex;
+  float: right;
+}
+
+.smallCaps {
+  font-variant: small-caps;
+}
+
+body {
+  background-color: white;
+  color: black;
+  font-family: "arial"; /* verdana, tahoma, helvetica, arial, sans-serif;*/
+  font-size: 100%;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  font-family: "arial"; /* , sans-serif; */
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 150%;
+  font-family: "arial";
+  border-bottom: 1px solid;
+  padding-bottom: 0.5ex;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 100%;
+  font-family: "arial";
+  padding-bottom: 0.5ex;
+}
+
+acronym {
+  background-color: inherit;
+  color: teal;
+  border-bottom: 1px dashed teal;
+  cursor: help;
+}
+
+code {
+  font-family: "lucida console", monospace;
+  font-size: 90%;
+}
+
+img {
+  border: 0;
+}
+
+q {
+  font-family: "arial"; /* , verdana, helvetica, arial, sans-serif; */
+  font-weight: bold;
+  border: 2px dotted;
+  margin: 0 1em 1ex 1em;
+  padding: 0.5ex 0.5ex 0.5ex 1ex;
+  width: 9em;
+  float: left;
+}
+
+
+/* ###### Header ###### */
+
+#header {
+  border-bottom: 2px solid;
+  height: 6em;
+  margin-bottom: 5mm;
+  padding: 2em 2.5mm 0 5mm;
+}
+
+.headerTitle {
+  font-size: 300%;
+}
+
+.headerLinks {
+  text-align: right;
+  margin-right: 2.5mm;
+  float: right;
+  clear: right;
+}
+
+.headerLinks * {
+  text-decoration: none;
+  font-weight: bold;
+  padding-right: 1ex;
+}
+
+.headerLinks a:hover {
+  text-decoration: underline;
+}
+
+.siteMap {
+  font-size: small;
+  text-align: left;
+  margin-left: 2.5mm;
+  margin-right: 2.5mm;
+  float: left;
+  clear: left;
+}
+
+.siteMap * {
+  text-decoration: none;
+/*  font-weight: bold; */
+  padding-right: 1ex;
+}
+
+.siteMap a:hover {
+  text-decoration: underline;
+}
+
+
+/* ###### Side Box ###### */
+
+.sideBox {
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  margin-top: 5mm;
+}
+
+.sideBox div {
+  font-weight: bold;
+  border-bottom: 1px dashed;
+  padding: 0.5ex 0.5em 0.5ex 0.75em;
+}
+
+.sideBox a, .sideBox a:hover, .sideBox span {
+  color: black;
+  text-decoration: none;
+  line-height: 1.25em;
+  display: block;
+  padding: 1ex 0.5em 1ex 0.75em;
+}
+
+
+/* ###### Footer ###### */
+
+#footer {
+  color: inherit;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  padding-top: 0.75ex;
+  padding-bottom: 0.75ex;
+  clear: left;
+}
+
+.footerImg {
+  padding-right: 3mm;
+  padding-top: 2mm;
+  float: none;
+}
+
+#footer div {
+  padding-left: 3mm;
+}
+
+#footer * {
+  background-color: inherit;
+  font-size: 92%;
+}
+
+#footer a:hover {
+  text-decoration: none;
+}
+
+.footerCol2 {
+  left: 7em;
+}
+
+/* project table */
+
+.stdlist {
+	width: 25%;
+}

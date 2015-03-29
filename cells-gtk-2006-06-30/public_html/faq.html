@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+  <link rel="stylesheet" type="text/css" href="style.css" title="Our Stylesheet"/>
+
+  <title>cells-gtk FAQ</title>
+
+</head>
+<body>
+
+<div id="top"></div>
+
+ <!-- ###### Header ###### -->
+
+  <div id="header">
+      <span class="headerTitle"><strong>cells-<span style="color: rgb(51, 51, 255);"><span style="color: rgb(255, 0, 0);">g</span><span style="color: rgb(51, 204, 0);">t</span>k</span> FAQ</strong></span>
+      <div class="headerLinks">
+        <a href="http://www.common-lisp.net/">common-lisp.net home</a>|<br/>
+        <a href="http://www.common-lisp.net/project/cells-gtk">cells-gtk home</a>
+      </div>
+  </div>
+
+<div id="bodyTextWideNoSideBox">
+
+
+  <!-- ###### FAQ ###### -->
+
+      <h1>Frequently Asked Questions</h1>
+      <ul>
+      <li><a href="#q1">What is Cells-GTK?</a></li>
+      <li><a href="#q2">What is Cells?</a></li>
+      <li><a href="#q3">What is required to deliver executables?</a></li>
+      <li><a href="#q5">Did anyone really ask these questions?</a></li>
+      <li><a href="#q6">What GTK Widgets are implemented in cells-gtk?</a></li>
+      <li><a href="#q7">Do I have to use cells?</a></li>
+      <li><a href="#q8">What is libcellsgtk.so about?</a></li>
+      <li><a href="#q8.4">What is in libcellsgtk.so?</a></li>
+      <li><a href="#q8.5">What is the difference between using c-input (AKA c-in) and c-formula (AKA c?) in a 
+             slot's :initform?</a></li>
+      <li><a href="#q9">Why do I need :owner here? It looks like c? would bind self to the mk-whatever
+                    enclosing the c?</a></li>
+      <li><a href="#q10">How do I do xyz?</a></li>
+      <li><a href="#q11">What does this error mean? : "cellular slot FOO of #&lt;BAR 21B555A4&gt; cannot be setf 
+                    unless initialized as inputp."</a></li>
+      <li><a href="#q12">Changing a cell value causes dependencies to fire, but what is considered a change?</li>
+      <li><a href="#q13">Can I keep a window around for redisplay after using the window border 
+                            'delete' button to delete it?</a></li>
+      <li><a href="#q14">Can I use streams with a TextView widget?</a></li>
+    </ul>
+
+<p/>
+
+<strong id="q1">Q: What is Cells-GTK?</strong><p/>
+<strong>A:</strong> Cells-GTK is a lisp binding of GTK written by Vasilis Margioulas. It uses the 
+Cells system, a sort of constraint propagation system written by kenny tilton.
+(see "What is Cells?"). As of this writing Cells-GTK runs under Allegro, Lispworks, CMUCL, SBCL
+and CLISP. 
+<p/>
+<strong id="q2">Q: What is Cells?</strong><p/>
+<strong>A:</strong> From the Cells website: "Cells is a mature, stable extension to CLOS that allows you 
+   to create classes, the instances of which have slots whose values are determined by 
+   a formula." 
+<p/>
+From <a href='http://bc.tech.coop/blog/030911.html'>Bill Clementson's Blog</a>: 
+ "...Cells allows you to define classes whose slots can be dynamically 
+  (and automatically) updated and for which standard 'observers' can be defined that react to changes 
+  in those slots."
+<p/> 
+   Here is an explanation from the viewpoint of a Cells-GTK programmer:
+   Cells provides Cells-GTK with two essential features: (1) a part-subpart relationship,
+   as is typically found in GUIs -- it allows the user to express that, e.g., this window contains these 
+   buttons and subwindows etc.; (2) the expression of a program's state machine, as viewed from the 
+   context of the user's interaction through the GUI. This last point is especially noteworthy, and 
+   needs more explanation. If you are at all familiar with developing moderately complex software
+   that is operated through a GUI, then you have probably learned this lesson: Keeping what is presented through 
+   the GUI in-sync with what the user is allowed to do, and in-sync with the computational state of 
+   the program is often tedious, complicated work. Specifically, there are the issues of what menu items 
+   ought to be made sensitive when, what items should be presented in list, what text should appear in
+   entries, etc. Cells-GTK helps with these tasks by providing an abstraction over the details; each
+   of the tasks just listed can be controlled by (a) formula that specify the value of attributes of graphic 
+   features in the part-subpart declaration (that declaration is called 'defpart' in cells-gtk); 
+   and, (b) formula that specify the value of CLOS slots. [Footnote, In the details of the implementation, 
+   (a) is just a usage of (b). But it helps to think of the ability to set a GUI feature with a
+   formula as something different than setting the value of slot with a formula.]. (c) 'observers' (to 
+   use Bill Clementson's term) that watch over GUI features and react to changes. 
+<p/>
+   An example of (a)
+   is setting the :sensitive feature of a GTK menu item. For this, I might use the formula (c? (user-file *my-gui*)).
+   Here user-file is the accessor of some object *my-gui*. :sensitive is a boolean, so whenever there
+   is a non-nil value in the slot user-file, the menu item is sensitive. That doesn't look a whole lot 
+   different than giving :sensitive whatever value (user-file *my-gui*) evaluates to.
+   The difference is that in Cells-GTK, the Cells codes watches over 'instrumented' slots such as user-file 
+   and automatically updates those attributes of a Cell-GTK object (such as a menu item's :sensitive feature) 
+   that are governed by a Cells formula. Thus, I don't have to explicitly update the value of 
+   :sensitive -- it happens automatically. 
+   <p/>
+   So what is this talk about 'expression of a program's state machine?' Well, the idea is that 
+   in a GUI operated by Cells-GTK, transition into a state is governed by cells-formulae on 
+   GUI features and cells-instrumented slots. E.g. when the user loads a file, (c? (user-file *my-gui*))
+   becomes true and the program enters the state where some menu item that wasn't sensitive now is 
+   -- the cells formulae are formulae on the arcs out of states. Is that stretching it too much? 
+   I don't know, it makes sense to me.
+   <p/>
+   See also:
+    <ul>      
+       <li><a href='http://common-lisp.net/project/cells/'>Cells on common-lisp.net</a></li>
+       <li><a href='http://www.tilton-technology.com/cells_top.html'>Cells at tilton-technology.com</a></li>
+       <li><a href='http://bc.tech.coop/blog/030911.html'>Bill Clementson's Blog, Cells entry</a></li>
+    </ul>
+
+<p/>
+
+<strong id="q3">Q: What is required to deliver executables?</strong><p/>
+There is only one data point that I know of with respect to this; I created an Win32 .exe
+using Lispworks. The code is available to anyone who might what to take a look (email me, it's
+not on a server anywhere). The <a href="http://www.mel.nist.gov/msid/MIV.html">.exe</a> is available too.<p/>
+Key aspects of the design:
+  <ul>
+    <li>I included with the GTK libraries with my application, so that the user didn't have
+        to mess around with finding and installing them. Whether that was really the best approach is
+        debatable. If I instead asked the user to get the GTK libraries and install them him/herself, they 
+        would be placed where libraries are usually found, and screwing around with *gtk-lib-path* might
+        not have been necessary. Even better, if I really knew what I was doing with NSIS, I might have
+        been able to install the libraries and my application on separate paths. 
+    <li>I used the <a href="http://nsis.sourceforge.net/Main_Page">NSIS</a> open source installer 
+        creation tool, which works nicely and, importantly, allowed me to add to the PATH variable. 
+        My software looks for GTK on the path to determine where it was installed. It 
+        then set *gtk-lib-path*.
+    <li>That's it!
+  </ul>
+
+
+<strong id="q5">Q: Did anyone really ask these questions?</strong><p/>
+<strong>A:</strong> Naw, I (Peter Denno) am just talking to myself. 
+<p/>
+<strong id="q6">Q: What GTK Widgets are implemented in cells-gtk?</strong><p/>
+<strong>A:</strong> [hmm, Better to ask what isn't. Most of the useful widgets are implemented, but
+    among those, many non-essential methods are not.] A quick look at the 
+<a href="http://developer.gnome.org/doc/API/2.0/gtk/ch02.html">widget gallery</a>.... These
+are not implemented:
+<ul>
+  <li>GtkColorButton</li>
+  <li>GtkFileChooserButton </li>
+  <li>GtkFontButton </li>
+  <li>GtkIconView</li>
+  <li>GtkStatusBar</li>
+  <li>GtkFontSelectionDialog</li>
+  <li>GtkColorSelectionDialog</li>
+</ul>
+<p/>There are quite a few other widgets not listed in the Gallery that aren't implmented.
+But BTW, it isn't difficult to implement most of these. If you need one, implement
+it and drop us a note! (If you need help, just ask.)
+
+<p/>
+<strong id="q7">Q: Do I have to use cells?</strong><p/>
+<strong>A:</strong> Probably not. But the demo uses them, so it might still be (despite the lack of 
+documentation of the cells API) the path of least resistance. (This answer is
+mostly to shame kenny tilton into writing some documentation ;^). There is at least a few
+applications (mine) that uses them productively. See also:
+        <ul>
+          <li><a href='http://common-lisp.net/project/cells/'>Cells on common-lisp.net</a></li>
+          <li><a href='http://www.tilton-technology.com/cells_top.html'>Cells at tilton-technology.com</a></li>
+          <li><a href='http://bc.tech.coop/blog/030911.html'>Bill Clementson's Blog, Cells entry</a></li>
+       </ul>
+<p/>
+<strong id="q8">Q: What is libcellsgtk.so about?</strong><p/>
+<strong>A:</strong> Sometimes there is a need to access something that isn't nominally part of the GTK API
+   but really is part of the GTK API as far as C programmers are concerned. An example of
+   this is found in the specification of dialog vboxes where the spec says to
+   just use dialog->vbox because:
+<p/>
+<tt>
+<pre>
+   typedef struct {
+      GtkWidget *vbox;
+      GtkWidget *action_area;
+   } GtkDialog;
+</pre>
+</tt>
+
+  But the truth is that this isn't what that C struct really looks like. 
+  It looks like this: 
+<tt>
+<pre>
+   typedef struct _GtkDialog  GtkDialog;
+   struct _GtkDialog
+   {
+      GtkWindow window;
+      /*&lt; public &gt;*/
+      GtkWidget *vbox;
+      GtkWidget *action_area;
+      /*&lt; private &gt;*/
+     GtkWidget *separator;
+  };
+</pre>
+</tt>
+  
+  ... and window is a big struct that might change from gtk version to gtk version.
+  Therefore there is no easy way for us (lisp ffi) to know how to address into the 
+  structure to get the vbox, so we wrote a 3 line c program to get it. (And other
+  3 line programs to do similar things). 
+  <p/>
+  You don't need libcellsgtk.so to run the demo, but you will to:
+    <ul>
+       <li> add an entry text widget to a dialog</li>
+       <li> add menu items using populate-popup (see GTK textview) </li>
+       <li> be able to programmatically modify the text in a textview</li>
+    </ul>
+  (As of this writing, those are the only situations). To use libcellsgtk.so you need 
+  to compile it. And that requires having access to the C header files corresponding 
+  the libgtk.so you are using. 
+
+<p/>
+<strong id="q8.4">Q: What is in libcellsgtk.so?</strong><p/>
+<strong>A:</strong>For details look at the source gtk-ffi/gtk-adds.c, but generally:
+<ul>
+  <li>Get a dialog's vbox (so that you can add children to it).</li>
+  <li>Get the popup menu of a textview</li>
+  <li>Allocate text iters and tree iters</li>
+  <li>Check whether or not a widget is mapped and visible</li>
+  <li>Get the window of a widget (useful for DrawingArea).</li>
+  <li>Allocate GdkColor objects</li>
+  <li>Set the RGB values of GdkColor objects.</li>
+</ul>
+
+<p/>
+<strong id="q8.5">Q: What is the difference between using c-input (AKA c-in) and c-formula (AKA c?) in a slot's 
+:initform ?</strong><p/>
+<strong>A:</strong>The two define different kinds of cells:<br/>
+A c-input cell is a cell whose value may be set through explicit procedural code, using setf on the slot.
+Note: When the cell is referenced by other cells in a cells constraint network, setf-ing the cell
+causes the values of other cells to be recomputed. 
+<br/>
+A c-formula cell is a cell whose value is obtained through evaluation of a formula.
+<br/>
+Note that the usual semantics of :initform do not apply when :initform is given by c-formula. 
+Instead of just setting the value at initialization, the c-formula (generated from the supplied lisp form) 
+specifies the dynamic relationship between the slot's value and other aspects of the program state. 
+<p/>
+
+<strong id="q9">Q: Why do I need :owner here? It looks like c? would bind self to the mk-whatever
+   enclosing the c?</strong><p/>
+<tt>
+<pre>
+:popup ; of a treebox
+(c?
+  (mk-menu
+   :owner self
+   :kids 
+   (c?
+     (list
+      (mk-menu-item :label "Describe"
+                    :on-activate 
+                    (callback (w e d)
+                      (md-value (owner (upper self menu)))
+                      (show-message (m:describe-item (md-value (owner (upper self menu)))))))))))
+</pre>
+</tt>
+<p/>
+<strong>A:</strong> :popup isn't :kids. So you need another way to get into the kids hierarchy of the parent.
+(upper self menu) gets us to the menu and (owner (upper self menu)) jumps into the kids 
+hierarchy, since c? always binds self to the containing mk-whatever object. (the outer c? does that here).
+
+<tt>
+<pre>
+;;-- Another example, 
+
+:populate-popup ; of a text-view
+(c? (mk-menu-item :label "Expression Templates"
+                  :owner self
+                  :on-activate 
+                  (callback (w e d)
+                    (show-message (format nil "XPath Nonsense self = ~A" (owner self))))))
+</pre>
+</tt>
+<p/>
+<strong>A:</strong> If you macroexpand callback, you will see that it binds self again, this time to the 
+   menu-item. <br/><tt>(owner self)</tt> gets you into the :kids hierarchy. 
+<p/>
+<strong id="q10">Q: How do I do xyz?</strong><p/>
+<strong>A:</strong> If xyz concerns Cells-GTK or the use of Cells in Cells-GTK, ask your question 
+   on the <a href="http://common-lisp.net/mailman/listinfo/cells-gtk-devel">project
+   mailing list</a>. The GTK documentation is also very helpful... And if it 
+   comes to it, adding the foreign function binding from the GTK API isn't hard either.
+<p/>
+<strong id="q11">Q: What does this error mean? : "cellular slot FOO of #&lt;BAR 21B555A4&gt; cannot be setf 
+                    unless initialized as inputp."</strong><p/>
+  <strong>A:</strong>This error is signalled because you tried to setf a c-formula slot.
+            'inputp' refers to c-input (declaration of an input cell) which should have been used 
+            to initialize the slot.
+            Read the <a href="cgtk-primer.html">cells-gtk primer</a> for more 
+            information.
+<p/>
+<strong id="q12">Q: Changing a cell value causes dependencies to fire, but what is considered a change?</strong><p/>
+   <strong>A:</strong> As you are suggesting, setting a slot to an "equivalent" object should not cause its
+     dependencies to fire again (in order to save substantial useless recalculations). So how is 
+     "equivalence" defined? EQL is used unless overridden by providing a function of two arguments 
+     to :unchanged-if in the slot definition of the defmodel. 
+
+
+<p/>
+<strong id="q13">Q: Can I keep a window around for redisplay after using the window border 
+                    'delete' button to delete it?</strong><p/>
+   <strong>A:</strong>Yes. Do something like this:
+
+<tt>
+<pre>
+(defmodel pseudo-dialog (window)
+  ()
+  (:default-initargs
+   :on-delete-event (callback (w e d) (gtk-widget-hide-on-delete w))))
+</pre>
+</tt>
+<p/>
+... and, of course, store the widget somewhere so you can later display it with
+ (gtk-widget-show-all (widget-id my-pseudo-dialog)).
+
+<p/>
+
+<strong id="q14">Q:Can I use streams with a TextView widget?</strong><p/>
+ <strong>A:</strong>Sure. Do something like this:
+
+<pre>
+(defmethod initialize-instance :after ((self your-gtk-app) &key)
+  (let ((message-textview [wherever it is]))
+    (setf *message-stream* 
+	(make-instance 'pane-stream 
+		       :buffer (buffer message-textview)
+		       :view message-textview))))
+
+(defclass pane-stream (stream:fundamental-character-output-stream)
+  ((view :initarg :view)
+   (buffer :initarg :buffer)
+   (mark :initarg :mark)
+   (offset :initform 0 :accessor offset)))
+
+(defmethod initialize-instance :after ((self pane-stream) &key)
+  (with-slots (buffer mark view) self
+     (let ((b (widget-id buffer))
+	   (v (widget-id view)))
+       (with-text-iters (iter) 
+          (cgtk:gtk-text-buffer-get-iter-at-offset b iter 0)
+	  (setf mark (cgtk:gtk-text-buffer-create-mark b "visibility" iter t)))
+       (cgtk:gtk-text-view-set-wrap-mode v 1)  ; optional, of course. 
+       (cgtk:gtk-text-view-set-editable v nil)))) ; also optional. 
+
+; Some lisps might not need this one. Some might need other methods.
+(defmethod stream:stream-line-column ((s pane-stream)) nil)
+
+(defmethod stream:stream-write-char ((s pane-stream) (c character))
+  (with-slots (view buffer offset mark) s
+     (cgtk:text-buffer-insert-text buffer offset (string c))
+     (incf offset)
+     (let ((buf (widget-id buffer)))
+       (with-text-iters (iter) 
+         (cgtk:gtk-text-buffer-get-iter-at-offset buf iter offset)
+	 (cgtk:gtk-text-buffer-move-mark buf mark iter)
+	 (cgtk:gtk-text-view-scroll-mark-onscreen (cgtk::id view) mark )))))
+
+(defmethod stream:stream-write-string ((s pane-stream) string &optional start end)
+  (with-slots (view buffer offset mark) s
+     (cgtk:text-buffer-insert-text buffer offset string)
+     (incf offset (length string))
+     (let ((buf (widget-id buffer)))
+       (with-text-iters (iter) 
+         (cgtk:gtk-text-buffer-get-iter-at-offset buf iter offset)
+	 (cgtk:gtk-text-buffer-move-mark buf mark iter)
+	 (cgtk:gtk-text-view-scroll-mark-onscreen (widget-id view) mark)))))
+
+</pre>
+
+
+<hr/>
+<address><a href="mailto:peter.denno@nist.gov">Peter Denno</a></address>
+Last modified: 2006-03-17
+<a href="http://validator.w3.org/check?uri=referer"><img
+  src="http://www.w3.org/Icons/valid-xhtml10"
+  alt="Valid XHTML 1.0!" height="31" width="88"/></a>
+
+</div>
+</body>
+</html>

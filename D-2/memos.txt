@@ -177,8 +177,55 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
 (let ((a 3)(b "abc")) (+ a 3)(print b))
 
 --------------------------------------------
+25/02/2015 08:17:02
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(reverse "just one expression")
+
+(first-n-chars "first-n-chars" 4 t)
+
 --------------------------------------------
+27/02/2015 20:52:15
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(print-string-stuff "the function returns")
+
+(factorial_2 20)
+
+(my-equation 4)
+
 --------------------------------------------
+21/03/2015 15:32:27
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_1.lisp")
+
+(factorial_2 20)
+
+(dolist (x '(a b c d e))
+          (print x))
+
+(time_process)
+(time (time_process))
+
+(compile 'time_process)
+
+(factorial 5)
+
+(time (factorial 5))
+
+;(compile-file "func_1.lisp")
+(compile-file "D-2/func_1.lisp")
+
+;REF http://www.cs.utexas.edu/~mtimkvch/lisp_tutorial.html#variables-and-data-types "Functional Programming"
+(defun square (x)
+  (* x x))
+  
+(mapcar 'square '(1 2 3 4 5))
+
+(remove-if 'oddp '(1 2 3 4 5))
+  
+  
 --------------------------------------------
 --------------------------------------------
 --------------------------------------------

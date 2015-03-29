@@ -1,0 +1,139 @@
+2006-02-14 - Trying to use cffi library stuff. 
+
+gtk-ffi/gtk-definitions.lisp is NOT USED! Get rid of it!
+
+
+2006-02-12 - Trying to use cffi library stuff. 
+
+
+(cffi:define-foreign-library :gobject
+  (:linux (:or "libgobject-2.0.so.0" "libgobject-2.0.so"))
+  (:win32 "libgobject-2.0-0.dll")
+  (:macosx "libgobject-2.0-0.dylib"))
+
+(cffi:define-foreign-library :glib
+  (:linux (:or "libglib-2.0.so.0" "libglib-2.0.so"))
+  (:win32 "libglib-2.0-0.dll")
+  (:macosx "libglib-2.0-0.dylib"))
+
+(cffi:define-foreign-library :gthread
+  (:linux (:or "libgthread-2.0.so.0" "libgthread-2.0.so"))
+  (:win32 "libgthread-2.0-0.dll")
+  (:macosx "libgthread-2.0-0.dylib"))
+
+(cffi:define-foreign-library :gdk
+  (:linux (:or "libgdk-x11-2.0.so.0" "libgdk-x11-2.0.so"))
+  (:win32 "libgdk-win32-2.0-0.dll")
+  (:macosx "libgdk-win32-2.0-0.dylib")) ; pod ???
+
+(cffi:define-foreign-library :gtk
+  (:linux (:or "libgtk-x11-2.0.so.0" "libgtk-x11-2.0.so"))
+  (:win32 "libgtk-win32-2.0-0.dll")
+  (:macosx "libgtk-win32-2.0-0.dylib")) ; pod ???
+
+#+libcellsgtk
+(cffi:define-foreign-library :cgtk
+  (:linux "libcellsgtk.so")
+  (:win32 "libcellsgtk.dll")
+  (:macosx "libcellsgtk.dylib"))
+
+(defun load-gtk-libs ()
+  (cffi:load-foreign-library :gobject)
+  (cffi:load-foreign-library :glib)
+  (cffi:load-foreign-library :gthread)
+  (cffi:load-foreign-library :gdk)
+  (cffi:load-foreign-library :gtk)
+  #+libcellsgtk
+  (cffi:load-foreign-library :cgtk))
+
+
+
+2006-02-12 - I'm lost as to what the special process-wait-with-timeout
+was doing for lispworks. Even with that old code, I don't get a prompt
+back while running the demo. It seems I only get the prompt when I run
+my entire program process-run-function, and then I don't need this thing.
+Sooooo....I'm eliminating the #/-lispworks.
+NOPE!!! If you do that, you'll get a prompt, but you won't be able to 
+do anything with it! Slime gets shut out unless you have the process-wait
+in there.
+
+
+2006-02-10 - trying to get it to run with CFFI 0.9.0
+
+Problem Callback ACTIVATE not defined in *widget-callbacks*
+   [Condition of type SIMPLE-ERROR]
+
+
+root/cells-gtk/widgets.lisp:
+  (def-gtk-event-handler activate)
+  (cons 'activate (ff-register-callable 'activate-handler))
+
+ffx.lisp:
+(defun ff-register-callable (callback-name)
+ (get callback-name 'cffi-sys::callback-ptr)
+
+CGTK> (pprint *widget-callbacks*)
+
+((CLICKED . #<Pointer to type :FUNCTION = #x20014E22>)
+ (CHANGED . #<Pointer to type :FUNCTION = #x20014F4A>)
+ (ACTIVATE . #<Pointer to type :FUNCTION = #x20016C6A>)
+ (VALUE-CHANGED . #<Pointer to type :FUNCTION = #x20016CAA>)
+ (DAY-SELECTED . #<Pointer to type :FUNCTION = #x20016CEA>)
+ (SELECTION-CHANGED . #<Pointer to type :FUNCTION = #x20016D2A>)
+ (TOGGLED . #<Pointer to type :FUNCTION = #x20016D6A>)
+ (DELETE-EVENT . #<Pointer to type :FUNCTION = #x20016F1A>)
+ (MODIFIED-CHANGED . #<Pointer to type :FUNCTION = #x20016F5A>))
+)  
+
+But in the new stuff:
+
+CGTK> (pprint *widget-callbacks*)
+
+((CLICKED)
+ (CHANGED)
+ (ACTIVATE)
+ (VALUE-CHANGED)
+ (DAY-SELECTED)
+ (SELECTION-CHANGED)
+ (TOGGLED)
+ (DELETE-EVENT)
+ (MODIFIED-CHANGED))
+
+...Not good
+
+CGTK> (ff-register-callable 'activate-handler)
+NIL
+... should return the pointer as it does in the old code:
+
+CGTK> (ff-register-callable 'activate-handler)
+#<Pointer to type :FUNCTION = #x20016C6A>
+
+
+;;;;;;;;;;;;
+
+FAQ item: Warn about with-slots
+
+FAQ item: drawing-area
+
+FAQ item: lisp listener
+
+FAQ item: Can I keep a window around for redisplay after using the window border 'delete' button to delete it?
+          Yes: 
+
+(defmodel pseudo-dialog (window)
+  ()
+  (:default-initargs
+   :on-delete-event (callback (w e d) (gtk-widget-hide-on-delete w))))
+
+... and, of course, store the widget somewhere so you can later display it with
+ (gtk-widget-show-all (widget-id my-pseudo-dialog))
+
+
+
+      <li><a href="#q2.5">Is Cells a constraint satisfaction system?</a></li>
+
+<strong> id="q2.5">Is Cells a constraint satisfaction system?</strong><p/>
+It's hard to say. The arcs used to represent relationships among variables in
+ <a ref="http://en.wikipedia.org/wiki/Constraint_satisfaction">Constraint satisfaction</a> 
+algorithms like AC-3 have explicit knowledge of variables... this needs more examination.
+

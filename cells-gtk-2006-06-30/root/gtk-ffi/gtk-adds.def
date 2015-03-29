@@ -1,0 +1,12 @@
+; dlltool -z gtk-adds.def gtk-adds.o
+EXPORTS
+	gtk_adds_widget_window @ 1
+	gtk_adds_color_set_rgb @ 2
+	gtk_adds_dialog_vbox @ 3
+	gtk_adds_ok @ 4
+	gtk_adds_text_iter_new @ 5
+	gtk_adds_text_view_popup_menu @ 6
+	gtk_adds_tree_iter_new @ 7
+	gtk_adds_widget_mapped_p @ 8
+	gtk_adds_widget_visible_p @ 9
+	gtk_adds_color_new @ 10

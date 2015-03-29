@@ -1,0 +1,56 @@
+
+To compile and run:
+
+STEP 0: WINDOWS USERS: Do the stuff marked "Windows Users" below.
+
+STEP .5: CLISP Users edit the path in ./load.lisp (you'll see it).
+
+STEP 1: EVERYONE: Start lisp, change to this directory and do (load "load")
+
+STEP 2: EVERYONE: (test-gtk::gtk-demo)
+
+STEP 3: ANYONE (optional) make libcellsgtk, (or get it from the cells-gtk site). To make:
+         3a) In ./root/gtk-ffi 'make' 
+         3b) Move the library created to where it will be found (Linux see /etc/ld.so.conf).
+         3c) Uncomment the line (pushnew :libcellsgtk *features*) in ./root/gtk-ffi/gtk-ffi.asd
+         3d) Recompile the distribution (remove fasls and type (load "load") again.
+
+
+TESTED ON:
+    Windows XP: (with gtk 2.4.10) 
+       AllegroCL 6.2 Enterprise, 
+       Lispworks 4.3 Personal
+    Windows 2000:
+       CLISP 2.38
+    Linux: 
+      Lispworks 4.4 Pro, 
+      CMUCL 19c, 
+      CLISP 2.36
+      SBCL 0.9.9.1
+
+NOT TESTED SINCE SWITCHING TO CFFI: (as of 2006-01-03):
+    AllegroCL
+    MACOSX
+
+;;; --------   Windows Users ---------------
+
+Get GTK and Install
+
+   http://gimp-win.sourceforge.net/stable.html  (I used version 2.8.9)
+   
+   Executing the setup.exe should add "C:\Program Files\Common Files\GTK\2.0\bin"
+   to your path. You can verify that it has:
+
+   Start>Settings>Control Panel>System>Advanced>Environment Variables>
+
+   (I had to reboot after this, but then I don't know anything about Win32).
+
+Note: On windows under emacs with slime, the gtk window does not popup. 
+      You must start the application from a dos prompt. 
+      (Solutions to this problem welcome!, probably involves putting something
+       like a call to gtk-iteration-do into some slime loop through a hook.)
+
+Known bugs:
+    On Windows: Clisp crashes if    
+    [My Computer]-> [Properties]-> [Advanced]-> [Perfomance Settings]-> [Show windows contents while dragging] 
+    is set and resize the window while viewing a listbox or treebox.

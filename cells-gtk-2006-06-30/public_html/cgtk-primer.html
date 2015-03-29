@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+  <link rel="stylesheet" type="text/css" href="style.css" title="Our Stylesheet"/>
+
+  <title>cells-gtk Primer</title>
+
+</head>
+<body>
+
+<div id="top"></div>
+
+ <!-- ###### Header ###### -->
+
+  <div id="header">
+      <span class="headerTitle"><strong>cells-<span style="color: rgb(51, 51, 255);"><span style="color: rgb(255, 0, 0);">g</span><span style="color: rgb(51, 204, 0);">t</span>k</span> Primer</strong></span>
+      <div class="headerLinks">
+        <a href="http://www.common-lisp.net/">common-lisp.net home</a>|<br/>
+        <a href="http://www.common-lisp.net/project/cells-gtk">cells-gtk home</a>
+      </div>
+  </div>
+
+<div id="bodyTextWideNoSideBox">
+
+<h1>Introduction</h1>
+
+<strong>[This is Work In Progress currently. My apologies.]</strong><p/>
+
+Here we will discuss the most important parts of the cells-gtk GTK binding, and how
+cells can be used in defining cells-gtk GUIs. This minimal introduction might be 
+sufficient to get you started. We'll see.
+
+<h2>Cells, Cell slots, and all that...</h2>
+
+The example from <a href='http://bc.tech.coop/blog/030911.html'>Bill Clementson's Blog</a>
+is a nice starting point. Read it and come back here.<p/>
+
+...Welcome back. Perhaps you came back with the impression that Cells is a way to manage
+the relationship among the values in the slots of a CLOS object. That would be good.
+You might also imagine that if the slots describe the state of some real world object like a motor, 
+you could use Cells to control the object -- to orchestrate how all its parts work together
+toward some goal. That also would be good. Now, if that object were a GTK-based GUI... no
+I'm getting ahead of myself. Let's look at the basic idea of Cells, it is similar to
+<a href="http://en.wikipedia.org/wiki/Constraint_satisfaction">constraint satisfaction</a>.
+That is, you have values, and rules that govern the relationships among the values,
+and whenever the network is pushed out of a consistent state (i.e. whenever the rules 
+no longer hold), the objective is to get it back to a consistent one by updating some values. 
+In Bill's example, <em>status fuelpump</em> and <em>temp</em> are cells -- slots in 
+a motor CLOS object whose values are managed by the cells constraint network. 
+The constraint network itself might be depicted as this:
+<p/>
+[graph]
+<p/>
+In this graph the nodes are values and edges have rules attached. The collection of edges
+into a node together with the rule are the cell. 
+<!-- (hmmm is this going to work?) --> The green nodes
+are values controlled by cells and the empty nodes are regular 'unmanaged' values 
+(such as you get by reading the value from regular CLOS slot). 
+<p/>
+Cells such as <em>temp</em>, which have no edges leading into them, are called 'c-input cells'.
+A c-input cell gives you an opportunity to push the network out of a consistent state,
+so that it must find another consistent state (raise the temperature, force the motor
+and fuel pump to stop). They are one way the network interacts with its environment.
+(Thinking about GUI: Part of the 'environment' of your Cells-GTK application are lisp objects, 
+the state of which you'd like to communicate to the user.)
+<p/>
+Another way that the cells network can interact with its environment is through 
+c-output (or c-echo) methods. These are 'observers' of a cell that are invoked when the 
+value of that cell is modified. They are sort of the converse of the c-input: modify
+a c-input value and the network reacts; when the network reacts, it can modify
+values outside the network with a c-output.
+<p/>
+So what about the values <em>inside</em> the network -- the nodes with edges pointing into them? 
+Observing those with c-output methods and using c-input and setf to modify them would be 
+bad form. If you program that way, you aren't doing anything that couldn't be done without Cells. 
+Drop Cells-GTK and go back to programming in C-based GTK or Java. The result will be that you 
+hand back to the programmer the burden of keeping track of every change to the GUI.
+C-input cells are intended (small apps like Bill's aside) to be used to 'instrument' 
+(or "put sensors on") your code. If you have a legacy code that you are building a Cells-GTK GUI for, ....
+<p/>
+
+
+<!--
+[They are what allow the object represented by the network to interact with its environment.]
+-->
+<p/> 
+
+
+<p/>
+Now reiterating the ideas above:
+
+<ul> 
+  <li>A <strong>cell</strong> is a slot in a CLOS object whose value is managed by accessors that are 
+  part of a cells constraint network.
+  <li>A <strong>cells constraint network</strong> is a collection of cells that are interrelated through 
+      reference to each other or through reference to other lisp objects, through any level of indirection.
+  <li>A <strong>c-input cell</strong> is a cell whose value may be set through explicit procedural code, 
+      using setf on the slot. Note:  setf-ing the cell causes the values of other cells to be recomputed --
+      provided the cell is referenced by other cells in a cells constraint network.</li>
+  <li>A <strong>c-formula cell</strong> is a cell whose value is obtained through evaluation of a formula.
+      Note: The usual semantics of :initform do not apply when :initform is given by c-formula. 
+      Instead of just setting the value at initialization, a formula (derived from the supplied lisp form) 
+      specifies the dynamic relationship between the slot's value and other aspects of the program state. 
+  <li>A <strong>c-output method</strong> is a method on a cell that is evaluated when the value of the
+      cell changes. 
+</ul>
+
+Cells provides for the declaration of several kinds of "cell slots," 
+but for the purpose of talking about cells-gtk, we can limit the discussion to 
+just the c-input  and c-formula cells. How do you recognize what kind of cell slot
+is being used? Well, first we should point out that by specifying 
+:cell nil in a defmodel slot definition, the slot defined is an ordinary CLOS 
+slot. The rest are specified using :initform on the slot. The following defmodel 
+defines a c-input cell, a c-formula cell and a regular CLOS slot.
+
+<pre>
+(defmodel example ()
+  ((control-me :initform (c-input (some-form-foo)) :accessor control-me)
+   (im-computed :initform (c-formula (some-form-bar)) :accessor im-computed)
+   (im-clos :cell nil :initform nil)))
+</pre>
+
+<tt>
+<pre>
+
+         slot
+        /    \
+     CLOS   cell
+            /   \
+     invariant  variant
+                 /    \
+      input-valued   formula-valued
+</pre>
+</tt>
+
+The figure above depicts a taxonomy of cell slots. 
+<strong>Cell slots</strong> can be categorized as <strong>invariant</strong> or 
+<strong>variant</strong>. <strong>Variant</strong> slots can be further categorized 
+as <strong>input-valued</strong> and <strong>formula-valued</strong>. 
+Some definitions:
+
+<ul> 
+        
+<li>A <strong>cell slot</strong> is specified by :cell t (advanced options aside) 
+or by omitting the :cell option, since in defmodel, the default is t.</li>
+
+<li>An <strong>invariant cell slot</strong> is a cell slot that is initialized 
+by an ordinary lisp form, either by an :initarg in make-instance, an :initform
+in the slot definition, or :default-initargs in the defmodel. The value of an 
+invariant cell slot should not be modified. Attempting to change it with setf
+will signal an error. (setf slot-value) is available for exceptional situations. </li>
+
+<li>A <strong>variant cell slot</strong> is a cell slot that is initialized 
+by (c-in ...) or (c? ...) in an :initarg in make-instance, or an :initform in the
+slot definition, or :default-initargs in the defmodel. Variant cell slot is an
+abstract notion; all variant cell slots are either input-valued or formula-valued.</li>
+
+<li>An variant cell slot is <strong>input-valued</strong> if it is initialized 
+by c-in. Input-valued variant cell serves as a port to the outside world. 
+They can be SETFed by imperative code, by events initiated by the user, for example. </li>
+
+<li>Finally, <strong>formula-valued</strong> variant cell slots are really 
+what Cells is about. A formula-valued cell slot is a variant cell slot whose
+value is obtained by the evaluation of a form (c? ...) form, a "formula."
+The formula may reference any value, but the intent is that some of 
+those value are from cells. (It seems to naturally works out that way too). 
+The cells system guarantees that the system of relationships described by c? slots 
+are consistent at some point after the values of some of them are changed.</li>
+</ul>
+
+<h2>Cells and Cells-GTK</h2>
+
+<h2>Good Cells Technique</h2>
+
+This all may seem abstract, but it has practical
+value in the design of your GUI. For example, I might set the :sensitivity
+of a button, the :text in a label or :fraction of a progress-bar based on 
+the presence or value of an object in another cell slot, or some relationship
+of cells slots described by the formula. Thus the problem of remembering
+"what to set when" is reduced to answering the question, <em>"What does the 
+state of the widget presented to the user represent about the state 
+of the program?"</em> The formula addresses that question directly, and is placed 
+at the widget presenting itself.
+
+<h2>A few notes</h2>
+
+<ul> 
+
+<li> As the above suggests, the kind of cell slot can be determined uniformly
+for all instances of the class, using an initform/default-initargs, 
+or individually at make-instance using an :initarg.</li>
+
+<li>The rationale for invariant cell slots it that they enable the Cells system to 
+perform certain optimizations. Those optimizations would be invalid were the 
+value to be changed.</li>
+
+<li>Formula, that is (c? ...) forms, do not evaluate until shortly after
+ make-instance time. In the case of the family class, this happens after 
+a new instance has been inserted in the family tree, and since instances 
+can see their parents, a slot rule can call on any information in the 
+model world in determining its value.</li>
+</ul>
+
+<h1>Cell Input, Output, and Formula-valued Cells</h1>
+
+The above described the purpose of the input cell. There is often the
+complementary need to react to the change of a value. <strong>def-c-output</strong>
+defines a method named for a cell slot and specialied on a defmodel defining 
+the slot (or one of its subclasses, the usual CLOS rules apply).
+<p/>
+The def-c-output method is invoked through process of propagation of an change to
+an input as follows:
+<ul>
+   <li> Change the slot value. </li>
+   <li> Output the slot value (call the DEF-C-OUTPUTs)</li>
+   <li> Propagate the change to using formula-valued cells. For each cell that 
+        decides on a changed value (changed being user-definable), begin at the top</li>
+   <li> When all recursive propagation has completed, execute any SETFs of 
+        c-inputs deferred during DEF-C-OUTPUT calls. (Yes, outputs can setf 
+        inputs. Envison a fish jumping out of the water and then falling back in).</li> 
+</ul>
+
+Each SETF gets process in order by starting from the top.
+<p/>
+The above happens with the following guarantee: When an input changes, 
+all dependencies (direct or indirect) are considered "stale" until they 
+are recomputed. The guarantee ensures that no cell slot accessor will ever 
+return a "stale" value.
+<p/>
+Note that concerning outputs setf-ing inputs, each SETF is 
+considered a "discrete generation" if you will. This is why all 
+propagation to formula-valued cell dependencies has to happen before any output 
+SETF (and why Cells has a mechanism to defer SETFs of inputs).
+
+<h1>Family: Referencing cells throughout the defmodel hierarchy.</h1>
+
+The <strong>defmodel</strong> macro defines a part-subpart relationship 
+among components of the interface. The relationship is made by the <strong>:kids</strong> initarg. 
+<strong>:kids</strong> is given a list of children. In a cells-gtk defmodel some kids might be GTKContainer 
+(vbox, hbox, etc) -- things that in the GTK world, have kids of their own. It may be a natural coding practice 
+in that case for the defmodel to define a fairly deep ancestory hierarchy, laying out the arrangement of widgets. 
+(You're free to break things up wherever seem reasonable for your application). It might look like this:
+
+<pre>
+(defmodel my-app (gtk-app)
+  ()
+  (:default-initargs
+  :md-name :my-app
+  :kids 
+  (list 
+    (mk-vbox
+      :kids
+        (list 
+           (mk-hbox
+	      :kids
+                 (list (mk-combo-box :md-name :my-combo) ...))
+           (mk-hbox
+	       :kids
+                (list (make-instance 'my-subpart))))))))
+</pre>
+The point of the Family methods is to allow things a different places in this hierarchy (e.g. :my-combo
+to reference :my-app). 
+
+<p/>
+<em>More will be written about this soon.</em>
+
+
+<hr/>
+<address><a href="mailto:peter.denno@nist.gov">Peter Denno</a></address>
+<!-- Created: Thu Mar  3 18:45:35 EST 2005 -->
+<!-- hhmts start -->
+Last modified: Sun Mar  6 18:43:09 EST 2005
+<!-- hhmts end -->
+</div>
+</body>
+</html>

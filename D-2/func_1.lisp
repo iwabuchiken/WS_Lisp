@@ -346,3 +346,75 @@
   (let (a 3))
   
   )
+
+(defun d_2_v_1_5_dotimes ()
+  
+  ;; init vars
+  (setf bag 2)
+  (print "bag=")(print bag)
+  
+  (setf x 9)
+  (print "x=")(print x)
+  
+  ;; dotimes
+  (print "dotimes => 6")
+;  (dotimes (x 4 "yo") (print "Hi")
+;  (dotimes (x 4) (print "Hi")(print x)
+  (dotimes 
+;    (x 4)
+    (x 6)
+	    (print "Hi")(print x)
+        (setf bag (* bag bag))
+        (print "bag=")(print bag)
+    
+  )
+
+  (print "dotmies => done")
+  
+  ;; report
+  (print "x=")(print x)
+  (print "bag=")(print bag)
+  
+  bag
+)
+
+(defun first-n-chars (string n reverse-first)
+          (if reverse-first
+            (subseq (reverse string) 0 n)
+            (subseq string 0 n))
+)
+
+(defun print-string-stuff (string-1)
+;  (print-string-stuff "abc")
+          (print string-1)
+          (print (reverse string-1))
+          (print (length string-1))
+          string-1)
+
+(defun factorial_2 (n)
+          (let ((sum 1))
+            (dotimes (x n)
+              (setf sum (* sum (1+ x))))
+            sum)
+  ;(print sum)
+  sum
+  
+  )
+
+(defun my-equation (n)
+          (+ n (* (sin n) (cos n))))
+
+
+(defun time_process (n)
+  
+  (dotimes (x n)		;;=> 
+;  (dotimes (x 5000000)		;;=> 5000 K, compiled: Real time: 0.3430196 sec. / Run time: 0.2496016 sec.
+;  (dotimes (x 5000000)		;;=> 5000 K: Real time: 3.9642267 sec. / Run time: 3.0264194 sec.
+  ;(dotimes (x 500000)		;;=> 500 K: Real time: 0.4050231 sec. / Run time: 0.3276021 sec.
+;  (dotimes (x 50000)		;;=> Real time: 0.0510029 sec. / Run time: 0.0312002 sec.
+;  (dotimes (x 5000)		;;=> Real time: 0.0030002 sec. / Run time: 0.0 sec.
+;  (dotimes (x 5)
+    ;(print x)
+    )
+  
+  )
