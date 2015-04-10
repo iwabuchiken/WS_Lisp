@@ -227,6 +227,22 @@ lambda (X) (not (member X L2))) L1)	;=> n/w
   
   
 --------------------------------------------
+10/04/2015 14:56:25
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_D-2_v-2.0.lisp")
+(compile-file "C:/WORKS/WS/WS_Lisp/D-2/func_D-2_v-2.0.lisp")
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_2.lisp")
+(compile-file "C:/WORKS/WS/WS_Lisp/D-2/func_2.lisp")
+(load "func_2")
+
+(load "func_D-2_v-2.0")
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_D-2_v-2.0")
+
+(load "C:/WORKS/WS/WS_Lisp/D-2/func_D-2_v-2.0.lisp")
+(log_W 4 '(1 2 1 0))
+
+
 --------------------------------------------
 --------------------------------------------
 --------------------------------------------
